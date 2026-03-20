@@ -10,6 +10,7 @@ interface ClickerGameProps {
   progressToNext: number;
   clickPower: number;
   autoPerSec: number;
+  globalMultiplier: number;
   floats: { id: number; x: number; y: number; points: number }[];
   upgrades: Upgrade[];
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -26,6 +27,7 @@ const ClickerGame = ({
   progressToNext,
   clickPower,
   autoPerSec,
+  globalMultiplier,
   floats,
   upgrades,
   onClick,
@@ -72,15 +74,21 @@ const ClickerGame = ({
           </div>
 
           {/* Мини-статы прокачки */}
-          <div className="flex gap-2 mb-4">
-            <div className="flex-1 bg-[#36393f] rounded px-2 py-1 text-center">
+          <div className="flex gap-2 mb-4 flex-wrap">
+            <div className="flex-1 bg-[#36393f] rounded px-2 py-1 text-center min-w-[70px]">
               <span className="text-[#b9bbbe] text-xs">⚡ За клик: </span>
               <span className="text-white text-xs font-bold">{clickPower}</span>
             </div>
             {autoPerSec > 0 && (
-              <div className="flex-1 bg-[#36393f] rounded px-2 py-1 text-center">
+              <div className="flex-1 bg-[#36393f] rounded px-2 py-1 text-center min-w-[70px]">
                 <span className="text-[#b9bbbe] text-xs">🤖 Авто: </span>
                 <span className="text-[#3ba55c] text-xs font-bold">+{autoPerSec}/с</span>
+              </div>
+            )}
+            {globalMultiplier > 1 && (
+              <div className="flex-1 bg-[#36393f] rounded px-2 py-1 text-center min-w-[70px]">
+                <span className="text-[#b9bbbe] text-xs">✨ Множитель: </span>
+                <span className="text-[#faa61a] text-xs font-bold">x{globalMultiplier.toFixed(2)}</span>
               </div>
             )}
           </div>

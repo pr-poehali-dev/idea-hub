@@ -59,6 +59,16 @@ const INITIAL_UPGRADES: Upgrade[] = [
     maxLevel: 5,
     effect: "autoclicker",
   },
+  {
+    id: "multiplier",
+    name: "Множитель очков",
+    desc: "x1.5 ко всем очкам за уровень",
+    emoji: "✨",
+    baseCost: 500,
+    level: 0,
+    maxLevel: 5,
+    effect: "multiplier",
+  },
 ];
 
 const SAVE_KEY = "clickmaster_save";
@@ -104,16 +114,18 @@ export const useGameState = () => {
   const comboWindow = 1000 + (upgradeLevels["combo_speed"] ?? 0) * 300;
   const comboStep = 5 - Math.min(4, upgradeLevels["combo_power"] ?? 0);
   const autoPerSec = (upgradeLevels["autoclicker"] ?? 0);
+  const globalMultiplier = Math.pow(1.5, upgradeLevels["multiplier"] ?? 0);
 
   // Автокликер
   useEffect(() => {
     if (autoPerSec === 0) return;
     const interval = setInterval(() => {
-      setScore((s) => s + autoPerSec);
-      setTotalScore((t) => t + autoPerSec);
+      const pts = Math.round(autoPerSec * globalMultiplier);
+      setScore((s) => s + pts);
+      setTotalScore((t) => t + pts);
     }, 1000);
     return () => clearInterval(interval);
-  }, [autoPerSec]);
+  }, [autoPerSec, globalMultiplier]);
 
   // Автосохранение каждые 5 секунд
   useEffect(() => {
@@ -138,7 +150,7 @@ export const useGameState = () => {
     lastClickRef.current = now;
 
     const comboMultiplier = 1 + Math.floor(newCombo / comboStep);
-    const points = clickPower * comboMultiplier;
+    const points = Math.round(clickPower * comboMultiplier * globalMultiplier);
 
     setScore((s) => s + points);
     setTotalScore((t) => t + points);
@@ -227,6 +239,7 @@ export const useGameState = () => {
     progressToNext,
     clickPower,
     autoPerSec,
+    globalMultiplier,
     handleClick,
     buyUpgrade,
     getUpgradeCost: (id: string) => {

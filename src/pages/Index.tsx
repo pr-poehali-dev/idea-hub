@@ -23,6 +23,7 @@ const Index = () => {
     progressToNext,
     clickPower,
     autoPerSec,
+    globalMultiplier,
     handleClick,
     buyUpgrade,
     getUpgradeCost,
@@ -82,6 +83,7 @@ const Index = () => {
             progressToNext={progressToNext}
             clickPower={clickPower}
             autoPerSec={autoPerSec}
+            globalMultiplier={globalMultiplier}
             floats={floats}
             upgrades={upgrades}
             onClickerClick={handleClick}

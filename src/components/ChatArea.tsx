@@ -25,6 +25,7 @@ interface ChatAreaProps {
   progressToNext: number;
   clickPower: number;
   autoPerSec: number;
+  globalMultiplier: number;
   floats: { id: number; x: number; y: number; points: number }[];
   upgrades: Upgrade[];
   onClickerClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -42,6 +43,7 @@ const ChatArea = ({
   progressToNext,
   clickPower,
   autoPerSec,
+  globalMultiplier,
   floats,
   upgrades,
   onClickerClick,
@@ -125,6 +127,7 @@ const ChatArea = ({
               progressToNext={progressToNext}
               clickPower={clickPower}
               autoPerSec={autoPerSec}
+              globalMultiplier={globalMultiplier}
               floats={floats}
               upgrades={upgrades}
               onClick={onClickerClick}
