@@ -3,14 +3,17 @@ import { MousePointerClick } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import ChannelSidebar from "@/components/ChannelSidebar";
 import ChatArea from "@/components/ChatArea";
+import AdminPanel from "@/components/AdminPanel";
 import { useGameState } from "@/hooks/useGameState";
 
 const Index = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [adminOpen, setAdminOpen] = useState(false);
 
   const {
     score,
+    totalScore,
     clicks,
     combo,
     comboMultiplier,
@@ -23,11 +26,22 @@ const Index = () => {
     handleClick,
     buyUpgrade,
     getUpgradeCost,
+    adminSetScore,
+    adminSetTotalScore,
+    adminSetClicks,
+    adminSetUpgradeLevel,
+    adminMaxAllUpgrades,
+    adminResetAll,
+    adminSaveNow,
   } = useGameState();
 
   return (
     <div className="min-h-screen bg-[#36393f] text-white overflow-x-hidden">
-      <Navbar mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />
+      <Navbar
+        mobileMenuOpen={mobileMenuOpen}
+        setMobileMenuOpen={setMobileMenuOpen}
+        onAdminOpen={() => setAdminOpen(true)}
+      />
 
       <div className="flex min-h-screen">
         {/* Боковая панель серверов */}
@@ -105,6 +119,23 @@ const Index = () => {
           </div>
         </div>
       </div>
+
+      {adminOpen && (
+        <AdminPanel
+          onClose={() => setAdminOpen(false)}
+          score={score}
+          totalScore={totalScore}
+          clicks={clicks}
+          upgrades={upgrades}
+          onSetScore={adminSetScore}
+          onSetTotalScore={adminSetTotalScore}
+          onSetClicks={adminSetClicks}
+          onSetUpgradeLevel={adminSetUpgradeLevel}
+          onMaxAllUpgrades={adminMaxAllUpgrades}
+          onResetAll={adminResetAll}
+          onSaveNow={adminSaveNow}
+        />
+      )}
 
       <style>{`
         @keyframes floatUp {

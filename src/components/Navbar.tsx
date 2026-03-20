@@ -4,14 +4,19 @@ import { Button } from "@/components/ui/button";
 interface NavbarProps {
   mobileMenuOpen: boolean;
   setMobileMenuOpen: (open: boolean) => void;
+  onAdminOpen: () => void;
 }
 
-const Navbar = ({ mobileMenuOpen, setMobileMenuOpen }: NavbarProps) => {
+const Navbar = ({ mobileMenuOpen, setMobileMenuOpen, onAdminOpen }: NavbarProps) => {
   return (
     <nav className="bg-[#2f3136] border-b border-[#202225] px-4 sm:px-6 py-4">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-3 sm:gap-4">
-          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-[#5865f2] rounded-full flex items-center justify-center">
+          <div
+            className="w-8 h-8 sm:w-10 sm:h-10 bg-[#5865f2] rounded-full flex items-center justify-center cursor-pointer select-none"
+            onClick={onAdminOpen}
+            title=""
+          >
             <MousePointerClick className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </div>
           <div>

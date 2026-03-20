@@ -172,6 +172,49 @@ export const useGameState = () => {
   const progressToNext = totalScore % 100;
   const comboMultiplier = Math.max(1, 1 + Math.floor(combo / comboStep));
 
+  const adminSetScore = (v: number) => {
+    setScore(v);
+    saveToBrowser({ score: v, totalScore, clicks, upgrades: upgradeLevels });
+  };
+
+  const adminSetTotalScore = (v: number) => {
+    setTotalScore(v);
+    saveToBrowser({ score, totalScore: v, clicks, upgrades: upgradeLevels });
+  };
+
+  const adminSetClicks = (v: number) => {
+    setClicks(v);
+    saveToBrowser({ score, totalScore, clicks: v, upgrades: upgradeLevels });
+  };
+
+  const adminSetUpgradeLevel = (id: string, level: number) => {
+    setUpgradeLevels((prev) => {
+      const next = { ...prev, [id]: level };
+      saveToBrowser({ score, totalScore, clicks, upgrades: next });
+      return next;
+    });
+  };
+
+  const adminMaxAllUpgrades = () => {
+    const next: Record<string, number> = {};
+    INITIAL_UPGRADES.forEach((u) => { next[u.id] = u.maxLevel; });
+    setUpgradeLevels(next);
+    saveToBrowser({ score, totalScore, clicks, upgrades: next });
+  };
+
+  const adminResetAll = () => {
+    setScore(0);
+    setTotalScore(0);
+    setClicks(0);
+    setUpgradeLevels({});
+    setCombo(0);
+    saveToBrowser({ score: 0, totalScore: 0, clicks: 0, upgrades: {} });
+  };
+
+  const adminSaveNow = () => {
+    saveToBrowser({ score, totalScore, clicks, upgrades: upgradeLevels });
+  };
+
   return {
     score,
     totalScore,
@@ -191,5 +234,12 @@ export const useGameState = () => {
       if (!u) return 0;
       return getUpgradeCost(u, u.level);
     },
+    adminSetScore,
+    adminSetTotalScore,
+    adminSetClicks,
+    adminSetUpgradeLevel,
+    adminMaxAllUpgrades,
+    adminResetAll,
+    adminSaveNow,
   };
 };
