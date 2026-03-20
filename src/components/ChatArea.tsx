@@ -14,27 +14,40 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ClickerGame from "@/components/ClickerGame";
+import type { Upgrade } from "@/hooks/useGameState";
 
 interface ChatAreaProps {
   score: number;
   clicks: number;
   combo: number;
+  comboMultiplier: number;
   level: number;
   progressToNext: number;
-  floats: { id: number; x: number; y: number }[];
+  clickPower: number;
+  autoPerSec: number;
+  floats: { id: number; x: number; y: number; points: number }[];
+  upgrades: Upgrade[];
   onClickerClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   onOpenSidebar: () => void;
+  buyUpgrade: (id: string) => void;
+  getUpgradeCost: (id: string) => number;
 }
 
 const ChatArea = ({
   score,
   clicks,
   combo,
+  comboMultiplier,
   level,
   progressToNext,
+  clickPower,
+  autoPerSec,
   floats,
+  upgrades,
   onClickerClick,
   onOpenSidebar,
+  buyUpgrade,
+  getUpgradeCost,
 }: ChatAreaProps) => {
   return (
     <div className="flex-1 flex flex-col">
@@ -107,10 +120,16 @@ const ChatArea = ({
               score={score}
               clicks={clicks}
               combo={combo}
+              comboMultiplier={comboMultiplier}
               level={level}
               progressToNext={progressToNext}
+              clickPower={clickPower}
+              autoPerSec={autoPerSec}
               floats={floats}
+              upgrades={upgrades}
               onClick={onClickerClick}
+              buyUpgrade={buyUpgrade}
+              getUpgradeCost={getUpgradeCost}
             />
           </div>
         </div>

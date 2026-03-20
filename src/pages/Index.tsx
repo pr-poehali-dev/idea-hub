@@ -1,45 +1,29 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { MousePointerClick } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import ChannelSidebar from "@/components/ChannelSidebar";
 import ChatArea from "@/components/ChatArea";
+import { useGameState } from "@/hooks/useGameState";
 
 const Index = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-  const [score, setScore] = useState(0);
-  const [clicks, setClicks] = useState(0);
-  const [floats, setFloats] = useState<{ id: number; x: number; y: number }[]>([]);
-  const [combo, setCombo] = useState(0);
-  const [lastClick, setLastClick] = useState(0);
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const now = Date.now();
-    const newCombo = now - lastClick < 1000 ? combo + 1 : 1;
-    setCombo(newCombo);
-    setLastClick(now);
-
-    const points = 1 + Math.floor(newCombo / 5);
-    setScore((s) => s + points);
-    setClicks((c) => c + 1);
-
-    const rect = e.currentTarget.getBoundingClientRect();
-    const id = Date.now() + Math.random();
-    const x = e.clientX - rect.left + (Math.random() * 40 - 20);
-    const y = e.clientY - rect.top - 10;
-    setFloats((f) => [...f, { id, x, y }]);
-    setTimeout(() => setFloats((f) => f.filter((fl) => fl.id !== id)), 800);
-  };
-
-  useEffect(() => {
-    if (combo > 0) {
-      const timer = setTimeout(() => setCombo(0), 1500);
-      return () => clearTimeout(timer);
-    }
-  }, [combo, lastClick]);
-
-  const level = Math.floor(score / 100) + 1;
-  const progressToNext = score % 100;
+  const {
+    score,
+    clicks,
+    combo,
+    comboMultiplier,
+    floats,
+    upgrades,
+    level,
+    progressToNext,
+    clickPower,
+    autoPerSec,
+    handleClick,
+    buyUpgrade,
+    getUpgradeCost,
+  } = useGameState();
 
   return (
     <div className="min-h-screen bg-[#36393f] text-white overflow-x-hidden">
@@ -79,11 +63,17 @@ const Index = () => {
             score={score}
             clicks={clicks}
             combo={combo}
+            comboMultiplier={comboMultiplier}
             level={level}
             progressToNext={progressToNext}
+            clickPower={clickPower}
+            autoPerSec={autoPerSec}
             floats={floats}
+            upgrades={upgrades}
             onClickerClick={handleClick}
             onOpenSidebar={() => setMobileSidebarOpen(true)}
+            buyUpgrade={buyUpgrade}
+            getUpgradeCost={getUpgradeCost}
           />
 
           {/* Боковая панель участников */}
